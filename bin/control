@@ -61,7 +61,10 @@ function update() {
 }
 
 function start() {
-    if ! [ -f $pid ]; then
+    if process_running 'redis-server', $pid; then
+        echo "Redis is running"
+        return 0
+    else
         echo $REDIS_CLI > env/REDIS_CLI
         erb conf/redis.conf.erb | redis-server -
 
